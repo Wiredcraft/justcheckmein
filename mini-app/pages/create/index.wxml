@@ -1,0 +1,3 @@
+<!--pages/create/index.wxml-->
+<input placeholder='Input your event name' value='{{name}}' bindinput='bindNameChange'></input>
+<button bindtap='bindAddAction'>ADD EVENT</button>

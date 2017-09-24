@@ -1,5 +1,5 @@
 const base64 = require('../utils/base64js.min.js');
-const baseURL = 'http://localhost:3000/api/';
+const baseURL = ' https://hackathon.wiredcraft.net/';
 
 export const fetchEventDetail = (hashId, user, successCal, failCal) => {
   wx.request({
@@ -61,6 +61,22 @@ export const checkIn = (eventId, userId, successCal, failCal) => {
     },
     fail: (res) => {
       if (failCal) failCal(res);
+    }
+  })
+}
+
+export const createEvent = (name, success, fail) => { 
+  wx.request({
+    method: 'POST',
+    url: baseURL + 'events',
+    data: {
+      name
+    },
+    success: (res) => {
+      if (success) { success(res)}
+    },
+    fail: (res) => {
+      if (fail) { fail(res) }
     }
   })
 }

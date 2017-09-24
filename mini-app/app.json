@@ -1,11 +1,34 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/create/index",
+    "pages/list/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#2e2d2f",
+    "selectedColor": "#0081C6",
+    "list": [
+      {
+        "pagePath": "pages/create/index",
+        "text": "Create Event"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "Check In"
+      },
+      {
+        "pagePath": "pages/list/index",
+        "text": "My Events"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 15000
   }
 }

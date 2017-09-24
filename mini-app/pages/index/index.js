@@ -1,4 +1,6 @@
 const apis = require('../../api/APIs.js')
+import { qrcode } from "../../generateCode/index"
+import urlDecoder from "../../utils/urlDecoder"
 
 const app = getApp()
 Page({
@@ -17,6 +19,13 @@ Page({
   },
 
   onLoad: function (options) {
+    const generateHashId = options.hashId;
+    const checkInHashId = this.retriveHashId(options.q);
+    if (generateHashId) {
+      // generate hashId
+      qrcode('qrcode', generateHashId, 450, 450);
+      return
+    }
     console.log('Global Data:', app.globalData);
     let query = app.globalData.query;
     // set the flag for user loading
@@ -36,6 +45,14 @@ Page({
         }
       })
     }
+  },
+
+  retriveHashId: function (urlString) {
+    const result = urlDecoder(urlString);
+    if (result === undefined) { return }
+    const hash_id = result['hashId'];
+    if (hash_id === undefined) { return }
+    return hash_id
   },
 
   checkIfUserExisted: (query, user, context) => {

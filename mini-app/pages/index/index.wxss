@@ -17,3 +17,8 @@
   width: 200px;
   padding: 10px;
 }
+
+.qrcode {
+  width: 450rpx;
+  height: 450rpx;
+}

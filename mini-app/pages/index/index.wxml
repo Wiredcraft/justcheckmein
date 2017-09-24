@@ -14,6 +14,7 @@
 <view wx:else> 
   <text> Welcome to the event</text>
   <text class='strong'> {{event.name}}</text>
+  <canvas canvas-id='qrcode' class='qrcode'></canvas>
   <view class="check-in">
      <view wx:if="{{checkIn.unchecked}}">
         <button bindtap="onTapCheckIn">
