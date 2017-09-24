@@ -15,17 +15,21 @@
   <text> Welcome to the event</text>
   <text class='strong'> {{event.name}}</text>
   <view class="check-in">
-    <button bindtap="onTapCheckIn">
      <view wx:if="{{checkIn.unchecked}}">
-        <text> Check In</text> 
+        <button bindtap="onTapCheckIn">
+          <text> Check In</text> 
+        </button>
       </view>
       <view wx:if="{{checkIn.checking}}">
-        <text> Checking</text> 
+        <button>
+          <text> Checking</text> 
+        </button>
       </view>
       <view wx:if="{{checkIn.checked}}">
-        <text> All Done</text> 
+        <button>
+          <text> All Done</text> 
+        </button>
       </view>
-     </button>
   </view>
 </view>
 <text>{{checkIn.result}}</text>
