@@ -1,1 +1,11 @@
 /* pages/create/index.wxss */
+.container {
+  text-align: center;
+  width: 80%;
+  margin: 20% auto;
+}
+
+.container > button {
+  margin-top: 60rpx;
+  width: 100%;
+}

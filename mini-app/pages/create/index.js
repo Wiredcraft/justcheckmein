@@ -34,17 +34,22 @@ Page({
       })
       return
     }
-    apis.createEvent({
-      name: name,
-      success: (res) => {
-        const hashId = res.hashId;
-        wx.switchTab({
-          url: `../index/index?hashId=${hashId}`,
-        })
-      },
-      fail: (res) => {
 
-      }
+    apis.createEvent(name, (res) => {
+      console.log(res)
+      const {hashId, name} = res.data;
+      wx.setStorage({
+        key: 'eventKey',
+        data: {hashId, name},
+        success: () => {
+          wx.switchTab({
+            url: '../index/index',
+          })
+        }
+      })
+    }, (err) => {
+
+
     })
   }
 })

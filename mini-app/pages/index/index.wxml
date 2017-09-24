@@ -1,37 +1,11 @@
 <!--index.wxml-->
 <view class="container">
 
-<view wx:if="{{loadingUser}}">
-<text> Fetching user ... </text> 
-</view>
-<view wx:else> 
-<text>Hi, {{user.userInfo.nickName}}</text> 
-</view>
-
-<view wx:if="{{loadingEvent}}">
-  <text> Fetching event ... </text> 
-</view>
-<view wx:else> 
-  <text> Welcome to the event</text>
-  <text class='strong'> {{event.name}}</text>
-  <canvas canvas-id='qrcode' class='qrcode'></canvas>
-  <view class="check-in">
-     <view wx:if="{{checkIn.unchecked}}">
-        <button bindtap="onTapCheckIn">
-          <text> Check In</text> 
-        </button>
-      </view>
-      <view wx:if="{{checkIn.checking}}">
-        <button>
-          <text> Checking</text> 
-        </button>
-      </view>
-      <view wx:if="{{checkIn.checked}}">
-        <button>
-          <text> All Done</text> 
-        </button>
-      </view>
+  <text wx:if="{{!generatedHashId}}">Hi, {{userName}}. Welcome to the event</text>
+  <text wx:if="{{generatedHashId}}">Scan to check in</text>
+  <text class="strong" >{{eventName}}</text>
+  <canvas wx:if="{{generatedHashId}}" canvas-id='qrcode' class='qrcode'></canvas>
+  <view wx:if="{{!generatedHashId}}" class="check-in">
+    <button bindtap='onTapCheckIn'>{{isCheckedIn? 'uncheck' : 'check in'}}</button>
   </view>
-</view>
-<text>{{checkIn.result}}</text>
 </view>

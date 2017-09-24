@@ -5,35 +5,29 @@ import urlDecoder from "../../utils/urlDecoder"
 const app = getApp()
 Page({
   data: {
-    loadingUser: false,
-    loadingEvent: false,
-    user: {},
-    event: {},
-    registedUser: {},
-    checkIn: {
-      unchecked: true,
-      checking: false,
-      checked: false,
-      result:''
-    }
+    generatedHashId: undefined,
+    eventName: undefined,
+    userName: 'robot',
+    isCheckedIn: false,
   },
+  
 
   onLoad: function (options) {
-    const generateHashId = options.hashId;
+    
     const checkInHashId = this.retriveHashId(options.q);
-    if (generateHashId) {
-      // generate hashId
-      qrcode('qrcode', generateHashId, 450, 450);
-      return
-    }
+    
     console.log('Global Data:', app.globalData);
     let query = app.globalData.query;
     // set the flag for user loading
+    wx.showLoading({
+      title: 'Fetching User data',
+    })
     if (app.globalData.user.nickName) {
       this.setData({
         user: app.globalData.user
       });
       this.checkIfUserExisted(query, this.data.user, this);
+      wx.hideLoading()
     } else {
       wx.getUserInfo({
         success: res => {
@@ -42,9 +36,32 @@ Page({
             user: res
           });
           this.checkIfUserExisted(query, this.data.user, this);
+          wx.hideLoading()
+        }, 
+        fail: (res) => {
+          wx.hideLoading()
         }
       })
     }
+  },
+  onShow: function() {
+    wx.getStorage({
+      key: 'eventKey',
+      success: (res) => {
+        console.log(res)
+        const storedEvent = res.data;
+        const generateHashId = storedEvent.hashId;
+        const name = storedEvent.name;
+        if (!generateHashId) { return }
+        // generate hashId
+        this.setData({ eventName: name })
+        qrcode('qrcode', generateHashId, 450, 450);
+        this.setData({
+          generatedHashId: generateHashId,
+          eventName: name,
+        })
+      },
+    })
   },
 
   retriveHashId: function (urlString) {
@@ -114,14 +131,7 @@ Page({
   },
 
   onTapCheckIn: function () {
-    let self = this;
-    this.setData({
-      checkIn: {
-        unchecked: false,
-        checking: true,
-        checked: false,
-      }
-    });
+
     // send check-in request
     setTimeout(function() {
       apis.checkIn(self.data.event.id, self.data.registedUser.id, (res) => {

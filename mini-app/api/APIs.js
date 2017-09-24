@@ -1,5 +1,5 @@
 const base64 = require('../utils/base64js.min.js');
-const baseURL = 'https://hackathon.wiredcraft.net/';
+const baseURL = 'http://c3896085.ngrok.io/api/';
 
 export const fetchEventDetail = (hashId, user, successCal, failCal) => {
   wx.request({
@@ -70,7 +70,7 @@ export const createEvent = (name, success, fail) => {
     method: 'POST',
     url: baseURL + 'events',
     data: {
-      name
+      name: name
     },
     success: (res) => {
       if (success) { success(res)}
