@@ -1,5 +1,5 @@
 const base64 = require('../utils/base64js.min.js');
-const baseURL = ' https://hackathon.wiredcraft.net/';
+const baseURL = 'https://hackathon.wiredcraft.net/';
 
 export const fetchEventDetail = (hashId, user, successCal, failCal) => {
   wx.request({
