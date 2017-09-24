@@ -1,0 +1,8 @@
+<!--index.wxml-->
+<view class="container">
+<text>Hi, {{user.userInfo.nickName}}</text>
+<text>Welcome to {{event.name}}</text>
+<view class="check-in">
+   <button bindtap="onTapCheckIn"> Check In</button>
+</view>
+</view>
