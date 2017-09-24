@@ -1,7 +1,8 @@
 //app.js
 App({
   onLaunch: function (options) {
-    this.globalData.event.query = options.query;
+    // Get query string
+    console.log('Query:',options.query);
     // 登录
     wx.login({
       success: res => {
@@ -17,7 +18,8 @@ App({
           wx.getUserInfo({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
-              this.globalData.user = res;
+              this.globalData.userInfo = res.userInfo
+
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况
               if (this.userInfoReadyCallback) {
@@ -34,7 +36,7 @@ App({
 
     },
     event: {
-      query: ''
+
     }
   }
 })
