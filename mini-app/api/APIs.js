@@ -14,7 +14,7 @@ export const fetchEventDetail = (hashId, user, successCal, failCal) => {
   })
 }
 
-export const creatrUser = (user, successCal, failCal) => {
+export const register = (user, successCal, failCal) => {
   wx.request({
     method: 'POST',
     url: baseURL + 'users',
@@ -33,10 +33,10 @@ export const creatrUser = (user, successCal, failCal) => {
   })
 }
 
-export const checkIn = (hashId, user, successCal, failCal) => {
+export const checkIn = (eventId, userId, successCal, failCal) => {
   wx.request({
     method: 'PUT',
-    url: baseURL + 'events/' + hashId + '/users/rel/' + base64.fromByteArray(encodeURI(user.userInfo.nickName)),
+    url: baseURL + 'events/' + eventId + '/users/rel/' + userId,
     success: (res) => {
       if (successCal) successCal(res);
     },

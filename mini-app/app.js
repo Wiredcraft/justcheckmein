@@ -1,8 +1,7 @@
 //app.js
 App({
   onLaunch: function (options) {
-    // Get query string
-    console.log('Query:',options.query);
+    this.globalData.query = options.query
     // 登录
     wx.login({
       success: res => {
@@ -32,11 +31,8 @@ App({
     })
   },
   globalData: {
-    user: {
-
-    },
-    event: {
-
-    }
+    user: {},
+    event: {},
+    query: {}
   }
 })
