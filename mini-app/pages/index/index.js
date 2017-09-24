@@ -20,26 +20,45 @@ Page({
     console.log('Global Data:', app.globalData);
     let query = app.globalData.query;
     // set the flag for user loading
-    this.setData({
-      loadingUser: true
-    });
     if (app.globalData.user.nickName) {
       this.setData({
         user: app.globalData.user
       });
-      this.registerUser(query, this.data.user, this);
+      this.checkIfUserExisted(query, this.data.user, this);
     } else {
       wx.getUserInfo({
         success: res => {
-          console.log('User info response:', res);
           app.globalData.user = res
           this.setData({
             user: res
           });
-          this.registerUser(query, this.data.user, this);
+          this.checkIfUserExisted(query, this.data.user, this);
         }
       })
     }
+  },
+
+  checkIfUserExisted: (query, user, context) => {
+    context.setData({
+      loadingUser: true
+    });
+    apis.checkIfUserExisted(context.data.user, 
+    (data) => {
+      console.log('Checked User:', data);
+      if (data === null) {
+        context.registerUser(query, user, context)
+      } else {
+        context.setData({
+          loadingUser: false,
+          registedUser: data
+        });
+        console.log('Page Data:', context.data);
+        context.fetchEventDetail(query, user, context);
+      }
+    },
+    () => {
+
+    });
   },
 
   registerUser: (query, user, context) => {

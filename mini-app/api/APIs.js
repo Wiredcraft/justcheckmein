@@ -14,6 +14,25 @@ export const fetchEventDetail = (hashId, user, successCal, failCal) => {
   })
 }
 
+export const checkIfUserExisted = (user, successCal, failCal) => {
+  wx.request({
+    method: 'get',
+    url: baseURL + 'users/?filter' + encodeURI("{'where': {'openid':'" + base64.fromByteArray(encodeURI(user.userInfo.nickName)) + "'}}"),
+    success: (res) => {
+      if (successCal) {
+        if (res.data.length > 0) {
+          successCal(res.data[0]);
+        } else {
+          successCal(null)
+        }
+      }
+    },
+    fail: (res) => {
+      if (failCal) failCal(null);
+    }
+  })
+}
+
 export const register = (user, successCal, failCal) => {
   wx.request({
     method: 'POST',
