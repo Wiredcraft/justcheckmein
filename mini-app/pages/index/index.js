@@ -3,13 +3,15 @@ const apis = require('../../api/APIs.js')
 const app = getApp()
 Page({
   data: {
+    loadingUser: false,
+    loadingEvent: false,
     user: {},
-    event: {
-      hashId: '',
-      name: 'demo'
-    },
+    event: {},
     registedUser: {},
     checkIn: {
+      unchecked: true,
+      checking: false,
+      checked: false,
       result:''
     }
   },
@@ -17,6 +19,10 @@ Page({
   onLoad: function (options) {
     console.log('Global Data:', app.globalData);
     let query = app.globalData.query;
+    // set the flag for user loading
+    this.setData({
+      loadingUser: true
+    });
     if (app.globalData.user.nickName) {
       this.setData({
         user: app.globalData.user
@@ -39,51 +45,72 @@ Page({
   registerUser: (query, user, context) => {
     apis.register(user, (res) => {
       context.setData({
+        loadingUser: false,
         registedUser: res.data
       });
-      console.log('Register detail:', context.data);
-      // success callback
       context.fetchEventDetail(query, user, context);
     },
       () => {
-        // fail callback
+        context.setData({
+          loadingUser: false
+        });
       });
   },
 
   fetchEventDetail: (query, user, context) => {
+    context.setData({
+      loadingEvent: true
+    });
     // call the fetch event detail API
     apis.fetchEventDetail(query, user, (res) => {
-      console.log('Fetch event detail:', res);
       // success callback
       context.setData({
+        loadingEvent: false,
         event: res.data[0]
       })
     }, 
     () => {
       // fail callback
+      context.setData({
+        loadingEvent: false
+      })
     });
   },
 
   onTapCheckIn: function () {
-    console.log('I click the check-in button with params:', this.data);
-    let event = this.data.event;
-    // send check-in request
-    apis.checkIn(event.id, this.data.registedUser.id, (res) => {
-      console.log('Response:', res);
-      // success callback
-      this.setData({
-        checkIn: {
-          result: 'Check In successfully.'
-        }
-      })
-    },
-    () => {
-      // fail callback
-      this.setData({
-        checkIn: {
-          result: 'Failed to check in.'
-        }
-      })
+    let self = this;
+    this.setData({
+      checkIn: {
+        unchecked: false,
+        checking: true,
+        checked: false,
+      }
     });
+    // send check-in request
+    setTimeout(function() {
+      apis.checkIn(self.data.event.id, self.data.registedUser.id, (res) => {
+        console.log('Response:', res);
+        // success callback
+        self.setData({
+          checkIn: {
+            unchecked: false,
+            checking: false,
+            checked: true,
+            result: 'Check In successfully.'
+          }
+        })
+      },
+        () => {
+          // fail callback
+          self.setData({
+            checkIn: {
+              unchecked: true,
+              checking: false,
+              checked: false,
+              result: 'Failed to check in.'
+            }
+          })
+        });
+    }, 1000);
   }
 })

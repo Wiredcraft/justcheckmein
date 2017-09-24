@@ -1,9 +1,32 @@
 <!--index.wxml-->
 <view class="container">
-<text>Hi, {{user.userInfo.nickName}}</text>
-<text>Welcome to the event {{event.name}}</text>
-<view class="check-in">
-   <button bindtap="onTapCheckIn"> Check In</button>
+
+<view wx:if="{{loadingUser}}">
+<text> Fetching user ... </text> 
+</view>
+<view wx:else> 
+<text>Hi, {{user.userInfo.nickName}}</text> 
+</view>
+
+<view wx:if="{{loadingEvent}}">
+  <text> Fetching event ... </text> 
+</view>
+<view wx:else> 
+  <text> Welcome to the event</text>
+  <text class='strong'> {{event.name}}</text>
+  <view class="check-in">
+    <button bindtap="onTapCheckIn">
+     <view wx:if="{{checkIn.unchecked}}">
+        <text> Check In</text> 
+      </view>
+      <view wx:if="{{checkIn.checking}}">
+        <text> Checking</text> 
+      </view>
+      <view wx:if="{{checkIn.checked}}">
+        <text> All Done</text> 
+      </view>
+     </button>
+  </view>
 </view>
 <text>{{checkIn.result}}</text>
 </view>
